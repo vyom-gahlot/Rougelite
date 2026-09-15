@@ -23,6 +23,7 @@ private:
     int attack;
     int speed;
     int defense;
+    const int  BASE_DEFENSE = defense;
     enum class Ability{
         Attack,
         Dash,
