@@ -1,17 +1,23 @@
 #include "Enemy.h"
+#include "Player.h"
+#include "Game.h"
 
 #include<iostream>
 #include<random>
 
 
-Enemy::Enemy(){
-    health = 100;
-    attack = 5;
-    defense = 9;
-    speed = 4;
-};
+Enemy::Enemy(int hp, int atk, int def, int spd)
+    : health(hp),
+      TOTAL_HEALTH(hp),
+      attack(atk),
+      speed(spd),
+      defense(def),
+      BASE_DEFENSE(def)
+{
+}
 
-void Enemy::takedamage(int damage){
+
+void Enemy::takeDamage(int damage){
     health -= damage;
 };
 
@@ -55,23 +61,45 @@ int Enemy::EnemyAttack(){
 
     std::uniform_int_distribution<int> variation(0, speed);
 
-    std::cout<<"The enemy bares its teeth and lunges. Its strike tears through the air as you brace for impact.";
+    std::cout<<"The enemy bares its teeth and lunges. Its strike tears through the air as you brace for impact. \n";
     return attack + variation(gen);
 };
 
-void Enemy::EnemyHeal(){
-    if(health == 100){
+void Enemy::EnemyHeal()
+{
+    if (health == TOTAL_HEALTH) {
         EnemyAttack();
-    }else if(health < 100 && health > 80){
-        health = TOTAL_HEALTH;
-        std::cout<<"Dark energy courses through the creature's wounds, knitting flesh back together before your eyes.";
-    } else{
-        health += 20;
-        std::cout<<"Dark energy courses through the creature's wounds, knitting flesh back together before your eyes.";
+        return;
     }
-};
+
+    health += 20;
+
+    if (health > TOTAL_HEALTH) {
+        health = TOTAL_HEALTH;
+    }
+
+    std::cout << "Dark energy courses through the creature's wounds, "
+                 "knitting flesh back together before your eyes.\n";
+}
+
 
 void Enemy::EnemyShield(){
     defense = 2*defense;
-    std::cout<<"The creature lowers its stance. Its body hardens as it prepares to weather your assault.";
+    std::cout<<"The creature lowers its stance. Its body hardens as it prepares to weather your assault. \n";
 };
+
+int Enemy::getSpeed(){
+    return speed;
+};
+
+int Enemy::getHealth(){
+    return health;
+};
+
+void Enemy::resetDefense(){
+    defense = BASE_DEFENSE;
+}
+
+int Enemy::getMaxHealth(){
+    return TOTAL_HEALTH;
+}

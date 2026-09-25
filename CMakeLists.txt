@@ -10,5 +10,4 @@ add_executable(Roguelite
     Game.cpp
     Player.cpp
     Enemy.cpp
-    Progression.cpp
 )

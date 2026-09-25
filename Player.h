@@ -10,20 +10,21 @@ public:
     int chooseAbility(); // choose ability to use
     void useAbility(int chosenAbility);// use chosen ability
     void takeDamage(int damage); // take damage from enemies
-    void getHealth(); //get player health
     int playerAttack(); // use attack
-    void playerDash();// use to dash and try to dodge attack
+    bool playerDash();// use to dash and try to dodge attack
     void playerHeal();// to heal duh
     void playerShield();// double defense for 1 turn
-
+    int getSpeed();// get player speed
+    int getHealth();
+    void resetDefense();
 
 private:
     int health;
-    const int TOTAL_HEALTH = health;
+    int TOTAL_HEALTH;
     int attack;
     int speed;
     int defense;
-    const int  BASE_DEFENSE = defense;
+    int  BASE_DEFENSE;
     enum class Ability{
         Attack,
         Dash,
