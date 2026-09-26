@@ -1,3 +1,0 @@
-C:/Users/vyomg/OneDrive/Desktop/Code/C++/games/rougelite/build/CMakeFiles/Roguelite.dir
-C:/Users/vyomg/OneDrive/Desktop/Code/C++/games/rougelite/build/CMakeFiles/edit_cache.dir
-C:/Users/vyomg/OneDrive/Desktop/Code/C++/games/rougelite/build/CMakeFiles/rebuild_cache.dir
