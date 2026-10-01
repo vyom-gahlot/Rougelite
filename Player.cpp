@@ -6,14 +6,17 @@
 #include <iostream>
 #include <random>
 
-Player::Player(){
+Player::Player(int hp, int atk, int spd, int def)
+    :
+    health(hp),
+    attack(atk),
+    speed(spd),
+    defense(def),
+    BASE_DEFENSE(def),
+    TOTAL_HEALTH(hp),
+    BASE_SPEED(spd)
 
-    health = 100;
-    attack = 10;
-    speed = 8;
-    defense = 8;
-    BASE_DEFENSE = defense;
-    TOTAL_HEALTH = health;
+{    
 };
 
 
@@ -116,4 +119,19 @@ void Player::resetDefense(){
     defense = BASE_DEFENSE;
 };
 
- 
+void Player::modifySpeed(int val){
+
+    speed = val;
+}
+
+int Player::getDefense(){
+    return defense;
+}
+
+bool Player::isPlayerAlive(){
+    if(health == 0){
+        return false;
+    }
+
+    return true;
+}

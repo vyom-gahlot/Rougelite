@@ -2,10 +2,12 @@
 
 #include "Player.h"
 #include "Enemy.h"
+#include "EnemyType.h"
 
 #include "Game.h"
 
 #include<iostream>
+#include<random>
 
 
 void GameStart(){
@@ -27,103 +29,165 @@ void displayScreen(Player &player, Enemy &enemy){
 
 }
 
-void GameRun(Player &player, Enemy &enemy){
-    bool GameRunning = true;
+void selectEnemySize(int &enemySize){
+    std::cout<<"Enter no. of enemies you wish to fight";
+    std::cin>> enemySize;
+}
 
-    int enemyMaxHealth = enemy.getMaxHealth();
+Enemy** generateEnemies(int enemySize){
+    
 
-    std::cout<<"Enemy Max health : "<< enemyMaxHealth;
+    Enemy** entity = new Enemy*[enemySize];
 
-    while(GameRunning){
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
 
-        displayScreen(player, enemy);
+    std::uniform_int_distribution<int> enemychoice(0,2);
+
+    for(int i = 0; i<enemySize; ++i){
+        int chosenEnemy = enemychoice(gen);
+
+        Enemy* chosenEntity;
+
+        if(chosenEnemy==0){
+            chosenEntity = new Goblin(100, 6, 4, 6);
+        }else if(chosenEnemy == 1){
+            chosenEntity = new Orc(150, 14, 9, 4);
+        }else{
+            chosenEntity = new Skeleton(80, 9, 5, 9);
+        }   
+
+        entity[i] = chosenEntity; 
+    }    
+
+    return entity;
+};
+
+void GameRun(Player& player, Enemy* enemy)
+{
+    bool gameRunning = true;
+    int counter = 0;
+
+    while (gameRunning)
+    {
+        displayScreen(player, *enemy);
 
         int playerAbility = player.chooseAbility();
-        int enemyAbility = enemy.ChooseAbility();
         bool playerDodged = false;
+        bool playerAbilityUsed = false;
 
-        if(player.getSpeed()>=enemy.getSpeed()){
-             switch(playerAbility){
-                case 0: {
+        // Player gets the first move
+        if (player.getSpeed() >= enemy->getSpeed())
+        {
+            switch (playerAbility)
+            {
+                case 0:
+                {
                     int damage = player.playerAttack();
-                    enemy.takeDamage(damage);
-                    if(enemy.getHealth()<=0){
-                        std::cout<<"The creature crumples to the ground. Its final breath fades into the silence. \n";
-                        GameRunning = false;
+                    enemy->takeDamage(damage);
+                    playerAbilityUsed = true;
+
+                    if (enemy->getHealth() <= 0)
+                    {
+                        std::cout
+                            << "The creature crumples to the ground. "
+                               "Its final breath fades into the silence.\n";
+
+                        gameRunning = false;
                     }
-                    break;}
-                case 1:
-                     playerDodged = player.playerDash();
+
                     break;
+                }
+
+                case 1:
+                    playerDodged = player.playerDash();
+                    playerAbilityUsed = true;
+                    break;
+
                 case 2:
                     player.playerHeal();
+                    playerAbilityUsed = true;
                     break;
-                case 3: 
+
+                case 3:
                     player.playerShield();
+                    playerAbilityUsed = true;
+                    break;
             }
-            switch(enemyAbility){
-                case 0: {
-                    int damage = enemy.EnemyAttack();
-                    if(playerDodged){
-                        player.takeDamage(0);
-                    }else{
-                    player.takeDamage(damage);
-                    }
-                    if(player.getHealth()<=0){
-                        std::cout<<"Your strength abandons you. The world fades into darkness as you collapse beneath the enemy's final blow. \n";
-                        GameRunning = false;
-                    }}
-                    break;
-                case 1:
-                    enemy.EnemyHeal();
-                    break;
-                case 2:
-                    enemy.EnemyShield();
+
+            if (!gameRunning)
+                break;
+
+            enemy->useAbility(player, playerDodged, counter);
+
+            if (player.getHealth() <= 0)
+            {
+                std::cout
+                    << "Your strength abandons you. "
+                       "The world fades into darkness as you collapse "
+                       "beneath the enemy's final blow.\n";
+
+                gameRunning = false;
             }
-        } else{
-            switch(enemyAbility){
-                case 0: {
-                    if(playerAbility==1){
-                        playerDodged = player.playerDash();
+        }
+
+        // Enemy gets the first move
+        else
+        {
+            // Dash must happen before the enemy attacks
+            if (playerAbility == 1)
+            {
+                playerDodged = player.playerDash();
+                playerAbilityUsed = true;
+            }
+
+            enemy->useAbility(player, playerDodged, counter);
+
+            if (player.getHealth() <= 0)
+            {
+                std::cout
+                    << "Your strength abandons you. "
+                       "The world fades into darkness as you collapse "
+                       "beneath the enemy's final blow.\n";
+
+                gameRunning = false;
+                break;
+            }
+
+            // Player acts after the enemy
+            if (!playerAbilityUsed)
+            {
+                switch (playerAbility)
+                {
+                    case 0:
+                    {
+                        int damage = player.playerAttack();
+                        enemy->takeDamage(damage);
+
+                        if (enemy->getHealth() <= 0)
+                        {
+                            std::cout
+                                << "The creature crumples to the ground. "
+                                   "Its final breath fades into the silence.\n";
+
+                            gameRunning = false;
+                        }
+
+                        break;
                     }
-                    int damage = enemy.EnemyAttack();
-                    if(playerDodged){
-                        player.takeDamage(0);
-                    }else{
-                    player.takeDamage(damage);
-                    }
-                    if(player.getHealth()<=0){
-                        std::cout<<"Your strength abandons you. The world fades into darkness as you collapse beneath the enemy's final blow. \n";
-                        GameRunning = false;
-                    }
-                    break;}
-                case 1:
-                    enemy.EnemyHeal();
-                    break;
-                case 2:
-                    enemy.EnemyShield();
-            }   
-            switch(playerAbility){
-                case 0: {
-                    int damage = player.playerAttack();
-                    enemy.takeDamage(damage);
-                    if(enemy.getHealth()<=0){
-                        std::cout<<"The creature crumples to the ground. Its final breath fades into the silence. \n";
-                        GameRunning = false;
-                    }
-                    break;}
-                case 1:
-                    player.playerDash();
-                    break;
-                case 2:
-                    player.playerHeal();
-                    break;
-                case 3: 
-                    player.playerShield();
+
+                    case 2:
+                        player.playerHeal();
+                        break;
+
+                    case 3:
+                        player.playerShield();
+                        break;
+                }
             }
         }
 
         player.resetDefense();
-        enemy.resetDefense();
+        enemy->resetDefense();
     }
 }

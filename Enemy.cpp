@@ -21,39 +21,7 @@ void Enemy::takeDamage(int damage){
     health -= damage;
 };
 
-int Enemy::ChooseAbility(){
 
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-
-    std::uniform_int_distribution<int> generateAbilityChoice(0,2);    
-
-    int ChosenAbility = generateAbilityChoice(gen);
-
-    switch(ChosenAbility){
-        case 0: return (int)Ability::Attack;
-        case 1: return (int)Ability::Heal;
-        case 2: return (int)Ability::Shield;
-
-        default: return (int)Ability::Attack;
-    }
-
-};
-
-void Enemy::useAbility(int chosenAbility){
-
-    switch(chosenAbility){
-        case 0: 
-            EnemyAttack();
-            break;
-        case 1: 
-            EnemyHeal();
-            break;
-        case 2: 
-            EnemyShield();
-            break;
-    }
-};
 
 int Enemy::EnemyAttack(){
     static std::random_device rd;
@@ -65,23 +33,17 @@ int Enemy::EnemyAttack(){
     return attack + variation(gen);
 };
 
-void Enemy::EnemyHeal()
-{
-    if (health == TOTAL_HEALTH) {
+void Enemy::EnemyHeal(){
+    if(health == TOTAL_HEALTH){
         EnemyAttack();
-        return;
-    }
-
-    health += 20;
-
-    if (health > TOTAL_HEALTH) {
+    }else if(health < TOTAL_HEALTH && health > TOTAL_HEALTH - 20){
         health = TOTAL_HEALTH;
+        std::cout<<"Dark energy courses through the creature's wounds, knitting flesh back together before your eyes. \n";
+    } else{
+        health += 20;
+        std::cout<<"Dark energy courses through the creature's wounds, knitting flesh back together before your eyes. \n";
     }
-
-    std::cout << "Dark energy courses through the creature's wounds, "
-                 "knitting flesh back together before your eyes.\n";
-}
-
+};
 
 void Enemy::EnemyShield(){
     defense = 2*defense;
