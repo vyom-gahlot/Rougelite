@@ -2,9 +2,11 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Game.h"
+#include "Item.h"
 
 #include <iostream>
 #include <random>
+#include <vector>
 
 Player::Player(int hp, int atk, int spd, int def)
     :
@@ -15,7 +17,6 @@ Player::Player(int hp, int atk, int spd, int def)
     BASE_DEFENSE(def),
     TOTAL_HEALTH(hp),
     BASE_SPEED(spd)
-
 {    
 };
 
@@ -134,4 +135,84 @@ bool Player::isPlayerAlive(){
     }
 
     return true;
+}
+
+void Player::addWeapon(Item itemName){
+    if(itemName.type == "weapon"){
+        inventory.weapons.push_back(itemName);
+    } else{
+        std::cout<<"Invalid weapon";
+        return;
+    }
+
+    std::cout<<"Added Weapon to inventory";
+}
+
+void Player::removeWeapon(Item itemName){
+    if(itemName.type == "weapon"){
+        for(int i = 0; i < inventory.weapons.size(); i++ ){
+            if(inventory.weapons[i].name == itemName.name){
+                inventory.weapons.erase(inventory.weapons.begin() + i);
+                break;
+            }
+
+        }
+    }else{
+        std::cout<<"Invalid weapon";
+        return;
+    }
+
+}
+
+void Player::addArmor(Item itemName){
+    if(itemName.type == "armor"){
+        inventory.armor.push_back(itemName);
+    } else{
+        std::cout<<"Invalid Armor";
+        return;
+    }
+
+    std::cout<<"Added Armor to inventory";
+}
+
+void Player::removeArmor(Item itemName){
+    if(itemName.type == "armor"){
+        for(int i = 0; i < inventory.armor.size(); i++ ){
+            if(inventory.armor[i].name == itemName.name){
+                inventory.armor.erase(inventory.armor.begin() + i);
+                break;
+            }
+
+        }
+    }else{
+        std::cout<<"Invalid Armor";
+        return;
+    }
+
+}
+
+void Player::addFootwear(Item itemName){
+    if(itemName.type == "footwear"){
+        inventory.footwear.push_back(itemName);
+    } else{
+        std::cout<<"Invalid Footwear";
+        return;
+    }
+
+    std::cout<<"Added Footwear to inventory";
+}
+
+void Player::removeFootwear(Item itemName){
+    if(itemName.type == "footwear"){
+        for(int i = 0; i < inventory.footwear.size(); i++ ){
+            if(inventory.footwear[i].name == itemName.name){
+                inventory.footwear.erase(inventory.footwear.begin() + i);
+                break;
+            }
+
+        }
+    }else{
+        std::cout<<"Invalid Footwear";
+        return;
+    }
 }

@@ -1,7 +1,8 @@
 // Declarations
-
 #pragma once
 
+#include<vector>
+struct Item;
 
 class Player
 {
@@ -21,6 +22,15 @@ public:
     int getDefense();
     bool isPlayerAlive();
 
+    void addWeapon(Item itemName);
+    void removeWeapon(Item itemName);
+
+    void addArmor(Item itemName);
+    void removeArmor(Item itemName);
+
+    void addFootwear(Item itemNamee);
+    void removeFootwear(Item itemName);
+
 private:
     int health;
     const int TOTAL_HEALTH;
@@ -36,4 +46,22 @@ private:
         Shield
     };
     bool dodged = false;
+
+    struct Inventory {
+
+        int gold;
+        std::vector<Item> weapons {};
+        std::vector<Item> armor {};
+        std::vector<Item> footwear {}; 
+
+    };
+    Inventory inventory;
+
+    struct EquippedItems{
+        Item equippedWeapon;
+        Item equippedArmor;
+        Item equippedFootwear;
+    };
+    EquippedItems equippedItems;
+
 };
