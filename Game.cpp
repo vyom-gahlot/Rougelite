@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "EnemyType.h"
-
+#include "Item.h"
 #include "Game.h"
 
 #include<iostream>
@@ -50,7 +50,7 @@ Enemy** generateEnemies(int enemySize){
         Enemy* chosenEntity;
 
         if(chosenEnemy==0){
-            chosenEntity = new Goblin(100, 6, 4, 6);
+            chosenEntity = new Goblin(100, 9, 4, 6);
         }else if(chosenEnemy == 1){
             chosenEntity = new Orc(150, 14, 9, 4);
         }else{
@@ -190,4 +190,53 @@ void GameRun(Player& player, Enemy* enemy)
         player.resetDefense();
         enemy->resetDefense();
     }
+}
+
+void ChoosePlayerItems(Item &weapon, Item &armor, Item &footwear){
+
+    int choice;
+
+    std::cout<<"\nChoose weapon to use\n1. Rusty Shortsword\n2. Iron Cleaver\n";
+    std::cin>>choice;
+
+    switch(choice){
+        case 1: 
+            weapon =  Rusty_Shortsword;
+            break;
+        case 2: 
+            weapon = Iron_Cleaver;
+            break;
+        default:
+            weapon = Rusty_Shortsword;
+    }
+
+    std::cout<<"\nChoose armor to use\n1. Leather Vest\n2. Iron Cuirass\n";
+    std::cin>>choice;
+
+    switch(choice){
+        case 1: 
+            armor =  Leather_Vest;
+            break;
+        case 2: 
+            armor = Iron_Cuirass;
+            break;
+        default:
+            armor = Leather_Vest;
+    }
+
+    std::cout<<"\nChoose footwear to use\n1. Worn Boots \n2. Iron-Toed Boots \n";
+    std::cin>>choice;
+
+    switch(choice){
+        case 1: 
+            footwear =  Worn_Boots;
+            break;
+        case 2: 
+            footwear = IronToed_Boots;
+            break;
+        default:
+            footwear = Worn_Boots;
+    }
+
+
 }

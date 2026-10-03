@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Game.h"
 #include "EnemyType.h"
+#include "Item.h"
 
 #include <iostream>
 #include <vector>
@@ -10,7 +11,9 @@
 int main(){
 
     GameStart();
-    Player player {100, 8, 8, 8};
+    Item weapon,armor,footwear;
+    ChoosePlayerItems(weapon,armor,footwear);
+    Player player {100, 8, 8, 8, weapon, armor, footwear};
     int enemySize = 0;
     selectEnemySize(enemySize);
     Enemy** entity = generateEnemies(enemySize);

@@ -8,15 +8,20 @@
 #include <random>
 #include <vector>
 
-Player::Player(int hp, int atk, int spd, int def)
+Player::Player(int hp, int atk, int spd, int def, Item weapon, Item armor, Item footwear)
     :
-    health(hp),
-    attack(atk),
-    speed(spd),
-    defense(def),
-    BASE_DEFENSE(def),
-    TOTAL_HEALTH(hp),
-    BASE_SPEED(spd)
+    base_health(hp),
+    base_attack(atk),
+    base_speed(spd),
+    base_defense(def),
+    health(base_health + weapon.hp + armor.hp + footwear.hp),   
+    attack(base_attack + weapon.attack + armor.attack + footwear.attack),
+    speed(base_speed + weapon.speed + armor.speed + footwear.speed),
+    defense(base_defense + weapon.defense + armor.defense + footwear.defense),
+    TOTAL_DEFENSE(base_defense + weapon.defense + armor.defense + footwear.defense),
+    TOTAL_HEALTH(base_health + weapon.hp + armor.hp + footwear.hp),
+    TOTAL_SPEED(base_speed + weapon.speed + armor.speed + footwear.speed),
+    TOTAL_ATTACK(base_attack + weapon.attack + armor.attack + footwear.attack)
 {    
 };
 
@@ -117,7 +122,7 @@ int Player::getHealth(){
 };
 
 void Player::resetDefense(){
-    defense = BASE_DEFENSE;
+    defense = TOTAL_DEFENSE;
 };
 
 void Player::modifySpeed(int val){
@@ -215,4 +220,50 @@ void Player::removeFootwear(Item itemName){
         std::cout<<"Invalid Footwear";
         return;
     }
+}
+
+void Player::equipWeapon(Item itemName){
+
+    for(int i = 0; i < inventory.weapons.size(); i++){
+        if(inventory.weapons[i].name == itemName.name){
+        equippedItems.equippedWeapon = itemName;
+        return;
+        }
+    }
+    std::cout<<"\nWeapon does not exist in Inventory\n";
+
+}
+
+void Player::equipArmor(Item itemName){
+    
+    for(int i = 0; i < inventory.armor.size(); i++){
+        if(inventory.armor[i].name == itemName.name){
+        equippedItems.equippedArmor = itemName;
+        return;
+        }
+    }
+    std::cout<<"\nArmor does not exist in Inventory\n";
+}
+
+void Player::equipFootwear(Item itemName){
+    
+    for(int i = 0; i < inventory.footwear.size(); i++){
+        if(inventory.footwear[i].name == itemName.name){
+        equippedItems.equippedFootwear = itemName;
+        return;
+        }
+    }
+    std::cout<<"\nFootwear does not exist in Inventory\n";
+}
+
+void Player::unequipWeapon(){
+    equippedItems.equippedWeapon = WeaponNone;
+}
+
+void Player::unequipArmor(){
+    equippedItems.equippedArmor = ArmorNone;
+}
+
+void Player::unequipFootwear(){
+    equippedItems.equippedFootwear = FootwearNone;
 }

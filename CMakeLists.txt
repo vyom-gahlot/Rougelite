@@ -11,4 +11,5 @@ add_executable(Roguelite
     Player.cpp
     Enemy.cpp
     EnemyType.cpp
+    Item.cpp
 )
