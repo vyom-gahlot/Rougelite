@@ -267,3 +267,7 @@ void Player::unequipArmor(){
 void Player::unequipFootwear(){
     equippedItems.equippedFootwear = FootwearNone;
 }
+
+void Player::addGold(int amount){ 
+    inventory.gold += amount;
+}

@@ -12,4 +12,5 @@ add_executable(Roguelite
     Enemy.cpp
     EnemyType.cpp
     Item.cpp
+    Room.cpp
 )

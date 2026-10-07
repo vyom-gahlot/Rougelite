@@ -40,6 +40,7 @@ public:
 
     void equipFootwear(Item itemName);
     void unequipFootwear();
+    void addGold(int amount);
 
 private:
     const int base_health;
